@@ -1,6 +1,6 @@
 module "elb_controller_irsa_role" {
   source    = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version   = "5.34.0"
+  version   = "5.52.2"
   role_name = "${var.cluster_name}-elb-controller"
 
   attach_load_balancer_controller_policy = true

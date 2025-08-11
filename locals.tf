@@ -7,4 +7,6 @@ locals {
     },
     var.tags
   )
+
+  elb_controller_policy_default_prefix = "${var.cluster_name}-elb-controller-policy-"
 }

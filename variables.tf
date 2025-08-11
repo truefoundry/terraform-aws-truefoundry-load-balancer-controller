@@ -36,10 +36,16 @@ variable "elb_controller_role_permissions_boundary_arn" {
   default     = null
 }
 
-variable "elb_controller_policy_name_prefix" {
-  description = "The prefix for the elb controller policy name"
+variable "elb_controller_policy_prefix_enable_override" {
+  description = "Enable/Disable override of the elb controller policy prefix. If enabled, the elb_controller_policy_prefix_override_name variable must be set."
+  type        = bool
+  default     = false
+}
+
+variable "elb_controller_policy_prefix_override_name" {
+  description = "The override prefix for the elb controller policy name. This will be used if elb_controller_policy_prefix_enable_override is true."
   type        = string
-  default     = "AmazonEKS_"
+  default     = ""
 }
 
 variable "elb_controller_role_additional_policy_arns" {

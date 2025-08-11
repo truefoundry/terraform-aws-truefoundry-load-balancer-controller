@@ -36,10 +36,22 @@ variable "elb_controller_role_permissions_boundary_arn" {
   default     = null
 }
 
+variable "elb_controller_policy_name_prefix" {
+  description = "The prefix for the elb controller policy name"
+  type        = string
+  default     = "AmazonEKS_"
+}
+
 variable "elb_controller_role_additional_policy_arns" {
   description = "The additional policy ARNs for the elb controller role. For example, { 'policy' = 'arn:aws:iam::aws:policy/PolicyName' }"
   type        = map(string)
   default     = {}
+}
+
+variable "disable_default_tags" {
+  description = "Disable the default tags"
+  type        = bool
+  default     = false
 }
 
 variable "tags" {

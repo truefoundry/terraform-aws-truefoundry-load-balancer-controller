@@ -29,6 +29,8 @@ No resources.
 |------|-------------|------|---------|:--------:|
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | EKS Cluster Name | `string` | n/a | yes |
 | <a name="input_cluster_oidc_provider_arn"></a> [cluster\_oidc\_provider\_arn](#input\_cluster\_oidc\_provider\_arn) | The oidc provider ARN of the eks cluster | `string` | n/a | yes |
+| <a name="input_disable_default_tags"></a> [disable\_default\_tags](#input\_disable\_default\_tags) | Disable the default tags | `bool` | `false` | no |
+| <a name="input_elb_controller_policy_name_prefix"></a> [elb\_controller\_policy\_name\_prefix](#input\_elb\_controller\_policy\_name\_prefix) | The prefix for the elb controller policy name | `string` | `"AmazonEKS_"` | no |
 | <a name="input_elb_controller_role_additional_policy_arns"></a> [elb\_controller\_role\_additional\_policy\_arns](#input\_elb\_controller\_role\_additional\_policy\_arns) | The additional policy ARNs for the elb controller role. For example, { 'policy' = 'arn:aws:iam::aws:policy/PolicyName' } | `map(string)` | `{}` | no |
 | <a name="input_elb_controller_role_enable_override"></a> [elb\_controller\_role\_enable\_override](#input\_elb\_controller\_role\_enable\_override) | Enable/Disable override of the elb controller role name. If enabled, the elb\_controller\_role\_name\_override variable must be set. | `bool` | `false` | no |
 | <a name="input_elb_controller_role_override_name"></a> [elb\_controller\_role\_override\_name](#input\_elb\_controller\_role\_override\_name) | The override name for the elb controller role. This will be used if elb\_controller\_role\_enable\_override is true. | `string` | `""` | no |

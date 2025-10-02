@@ -1,6 +1,6 @@
 module "elb_controller_irsa_role" {
   source             = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version            = "5.52.2"
+  version            = "5.60.0"
   role_name          = var.elb_controller_role_enable_override ? var.elb_controller_role_override_name : "${var.cluster_name}-elb-controller"
   policy_name_prefix = local.elb_controller_policy_prefix
 

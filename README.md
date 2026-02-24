@@ -7,7 +7,7 @@ Terraform module to spin up AWS IAM load balancer controller
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.4 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.27 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.33 |
 
 ## Providers
 
@@ -17,7 +17,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_elb_controller_irsa_role"></a> [elb\_controller\_irsa\_role](#module\_elb\_controller\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts | 6.2.3 |
+| <a name="module_elb_controller_irsa_role"></a> [elb\_controller\_irsa\_role](#module\_elb\_controller\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts | 6.4.0 |
 
 ## Resources
 

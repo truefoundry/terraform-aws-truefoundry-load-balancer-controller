@@ -24,6 +24,12 @@ variable "elb_controller_role_enable_override" {
   default     = false
 }
 
+variable "elb_controller_use_name_prefix" {
+  description = "Use name prefix for the elb controller role and policy."
+  type        = bool
+  default     = true
+}
+
 variable "elb_controller_role_override_name" {
   description = "The override name for the elb controller role. This will be used if elb_controller_role_enable_override is true."
   type        = string
@@ -48,8 +54,8 @@ variable "elb_controller_policy_prefix_override_name" {
   default     = ""
 }
 
-variable "elb_controller_role_additional_policy_arns" {
-  description = "The additional policy ARNs for the elb controller role. For example, { 'policy' = 'arn:aws:iam::aws:policy/PolicyName' }"
+variable "elb_controller_role_additional_policies" {
+  description = "The additional policies for the elb controller role. For example, { 'policy' = 'arn:aws:iam::aws:policy/PolicyName' }"
   type        = map(string)
   default     = {}
 }

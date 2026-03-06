@@ -7,7 +7,7 @@ Terraform module to spin up AWS IAM load balancer controller
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.4 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.57 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.33 |
 
 ## Providers
 
@@ -17,7 +17,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_elb_controller_irsa_role"></a> [elb\_controller\_irsa\_role](#module\_elb\_controller\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | 5.60.0 |
+| <a name="module_elb_controller_irsa_role"></a> [elb\_controller\_irsa\_role](#module\_elb\_controller\_irsa\_role) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts | 6.4.0 |
 
 ## Resources
 
@@ -32,10 +32,11 @@ No resources.
 | <a name="input_disable_default_tags"></a> [disable\_default\_tags](#input\_disable\_default\_tags) | Disable the default tags | `bool` | `false` | no |
 | <a name="input_elb_controller_policy_prefix_enable_override"></a> [elb\_controller\_policy\_prefix\_enable\_override](#input\_elb\_controller\_policy\_prefix\_enable\_override) | Enable/Disable override of the elb controller policy prefix. If enabled, the elb\_controller\_policy\_prefix\_override\_name variable must be set. | `bool` | `false` | no |
 | <a name="input_elb_controller_policy_prefix_override_name"></a> [elb\_controller\_policy\_prefix\_override\_name](#input\_elb\_controller\_policy\_prefix\_override\_name) | The override prefix for the elb controller policy name. This will be used if elb\_controller\_policy\_prefix\_enable\_override is true. | `string` | `""` | no |
-| <a name="input_elb_controller_role_additional_policy_arns"></a> [elb\_controller\_role\_additional\_policy\_arns](#input\_elb\_controller\_role\_additional\_policy\_arns) | The additional policy ARNs for the elb controller role. For example, { 'policy' = 'arn:aws:iam::aws:policy/PolicyName' } | `map(string)` | `{}` | no |
+| <a name="input_elb_controller_role_additional_policies"></a> [elb\_controller\_role\_additional\_policies](#input\_elb\_controller\_role\_additional\_policies) | The additional policies for the elb controller role. For example, { 'policy' = 'arn:aws:iam::aws:policy/PolicyName' } | `map(string)` | `{}` | no |
 | <a name="input_elb_controller_role_enable_override"></a> [elb\_controller\_role\_enable\_override](#input\_elb\_controller\_role\_enable\_override) | Enable/Disable override of the elb controller role name. If enabled, the elb\_controller\_role\_name\_override variable must be set. | `bool` | `false` | no |
 | <a name="input_elb_controller_role_override_name"></a> [elb\_controller\_role\_override\_name](#input\_elb\_controller\_role\_override\_name) | The override name for the elb controller role. This will be used if elb\_controller\_role\_enable\_override is true. | `string` | `""` | no |
 | <a name="input_elb_controller_role_permissions_boundary_arn"></a> [elb\_controller\_role\_permissions\_boundary\_arn](#input\_elb\_controller\_role\_permissions\_boundary\_arn) | The permissions boundary ARN for the elb controller role | `string` | `null` | no |
+| <a name="input_elb_controller_use_name_prefix"></a> [elb\_controller\_use\_name\_prefix](#input\_elb\_controller\_use\_name\_prefix) | Use name prefix for the elb controller role and policy. | `bool` | `true` | no |
 | <a name="input_k8s_service_account_name"></a> [k8s\_service\_account\_name](#input\_k8s\_service\_account\_name) | The k8s elb controller service account name | `string` | n/a | yes |
 | <a name="input_k8s_service_account_namespace"></a> [k8s\_service\_account\_namespace](#input\_k8s\_service\_account\_namespace) | The k8s elb controller namespace | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | AWS Tags common to all the resources created | `map(string)` | `{}` | no |

@@ -9,7 +9,7 @@ module "elb_controller_irsa_role" {
   oidc_providers = {
     main = {
       provider_arn               = var.cluster_oidc_provider_arn
-      namespace_service_accounts = ["${var.k8s_service_account_namespace}:${var.k8s_service_account_name}"]
+      namespace_service_accounts = [local.elb_oidc_namespace_service_account]
     }
   }
   permissions_boundary = var.elb_controller_role_permissions_boundary_arn

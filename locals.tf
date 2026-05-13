@@ -18,4 +18,6 @@ locals {
   elb_controller_role_default_raw_name = "${var.cluster_name}-elb-controller"
   elb_controller_role_default_name     = substr(local.elb_controller_role_default_raw_name, 0, local.elb_controller_role_name_max_length)
   elb_controller_role_resolved_name    = var.elb_controller_role_enable_override ? var.elb_controller_role_override_name : local.elb_controller_role_default_name
+
+  elb_oidc_namespace_service_account = "${var.k8s_service_account_namespace}:${var.k8s_service_account_name}"
 }

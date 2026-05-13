@@ -1,6 +1,57 @@
 # terraform-aws-truefoundry-load-balancer-controller
 Terraform module to spin up AWS IAM load balancer controller
 
+## Upgrade Notes
+
+### v0.2.1 — IAM role name truncation fix
+
+Versions `v0.2.0` of this module unconditionally truncated the computed IAM role
+name to 37 characters via `substr("${var.cluster_name}-elb-controller", 0, 37)`,
+even when `elb_controller_use_name_prefix = false`. This caused role names in the
+38-64 character range to be destroyed and recreated under a shorter name during
+the `v0.1.x` → `v0.2.0` upgrade, breaking IRSA wiring downstream.
+
+`v0.2.1` makes the truncation conditional on `elb_controller_use_name_prefix`:
+
+- `use_name_prefix = true` (default): name is still capped at 37 chars to leave
+  room for the 26-char random suffix appended by the AWS provider (AWS IAM role
+  name hard limit is 64 chars).
+- `use_name_prefix = false`: name is capped at the AWS hard limit of 64 chars.
+  For all realistic cluster names this is a no-op, restoring `v0.1.x` behavior.
+
+#### Upgrading from v0.1.x → v0.2.1+
+
+No role recreation. The fix restores the un-truncated name behavior of `v0.1.x`.
+
+#### Upgrading from v0.2.0 → v0.2.1+
+
+If your cluster name produced a 38-64 char default role name on `v0.2.0`, your
+IAM role currently exists under a truncated name (e.g.
+`tfy-abc-computeplane-play-elb-control` instead of
+`tfy-abc-computeplane-play-elb-controller`). Upgrading to `v0.2.1` will restore
+the full un-truncated name, causing a **one-time destroy/recreate** of the IAM
+role.
+
+To keep the current trimmed name and avoid the recreate, set the existing
+override variables before upgrading:
+
+```hcl
+elb_controller_role_enable_override = true
+elb_controller_role_override_name   = "<current-trimmed-name>" # e.g. "tfy-abc-computeplane-play-elb-control"
+```
+
+#### Note for downstream consumers
+
+Downstream Helm charts that wire this module's role ARN into the AWS Load
+Balancer Controller's ServiceAccount annotation should pull from this module's
+`elb_iam_role_arn` output so the SA annotation tracks any future name change
+automatically. Be aware that the `tfy-k8s-aws-eks-inframold` chart renders its
+ArgoCD `Application` for `aws-load-balancer-controller` via a `pre-install`-only
+Helm hook, so role ARN changes do not propagate on `helm upgrade` — the ArgoCD
+`Application` may need to be deleted (or its `spec.source.helm.values` patched)
+to re-render the SA annotation. This is a separate issue tracked outside this
+module.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -46,6 +97,7 @@ No resources.
 | Name | Description |
 |------|-------------|
 | <a name="output_elb_iam_role_arn"></a> [elb\_iam\_role\_arn](#output\_elb\_iam\_role\_arn) | AWS IAM role arn for the ELB controller |
+| <a name="output_elb_iam_role_computed_name"></a> [elb\_iam\_role\_computed\_name](#output\_elb\_iam\_role\_computed\_name) | The IAM role name (or name\_prefix when use\_name\_prefix=true) computed by this module before being passed to the upstream IAM module. Useful for pre-apply introspection. When use\_name\_prefix=true the upstream module appends a random suffix to this value. |
 | <a name="output_elb_iam_role_name"></a> [elb\_iam\_role\_name](#output\_elb\_iam\_role\_name) | AWS IAM role name for the ELB controller |
 | <a name="output_elb_iam_role_path"></a> [elb\_iam\_role\_path](#output\_elb\_iam\_role\_path) | AWS IAM role path for the ELB controller |
 | <a name="output_elb_iam_role_unique_id"></a> [elb\_iam\_role\_unique\_id](#output\_elb\_iam\_role\_unique\_id) | AWS IAM role unique ID for the ELB controller |

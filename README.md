@@ -40,18 +40,6 @@ elb_controller_role_enable_override = true
 elb_controller_role_override_name   = "<current-trimmed-name>" # e.g. "tfy-abc-computeplane-play-elb-control"
 ```
 
-#### Note for downstream consumers
-
-Downstream Helm charts that wire this module's role ARN into the AWS Load
-Balancer Controller's ServiceAccount annotation should pull from this module's
-`elb_iam_role_arn` output so the SA annotation tracks any future name change
-automatically. Be aware that the `tfy-k8s-aws-eks-inframold` chart renders its
-ArgoCD `Application` for `aws-load-balancer-controller` via a `pre-install`-only
-Helm hook, so role ARN changes do not propagate on `helm upgrade` — the ArgoCD
-`Application` may need to be deleted (or its `spec.source.helm.values` patched)
-to re-render the SA annotation. This is a separate issue tracked outside this
-module.
-
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -97,7 +85,6 @@ No resources.
 | Name | Description |
 |------|-------------|
 | <a name="output_elb_iam_role_arn"></a> [elb\_iam\_role\_arn](#output\_elb\_iam\_role\_arn) | AWS IAM role arn for the ELB controller |
-| <a name="output_elb_iam_role_computed_name"></a> [elb\_iam\_role\_computed\_name](#output\_elb\_iam\_role\_computed\_name) | The IAM role name (or name\_prefix when use\_name\_prefix=true) computed by this module before being passed to the upstream IAM module. Useful for pre-apply introspection. When use\_name\_prefix=true the upstream module appends a random suffix to this value. |
 | <a name="output_elb_iam_role_name"></a> [elb\_iam\_role\_name](#output\_elb\_iam\_role\_name) | AWS IAM role name for the ELB controller |
 | <a name="output_elb_iam_role_path"></a> [elb\_iam\_role\_path](#output\_elb\_iam\_role\_path) | AWS IAM role path for the ELB controller |
 | <a name="output_elb_iam_role_unique_id"></a> [elb\_iam\_role\_unique\_id](#output\_elb\_iam\_role\_unique\_id) | AWS IAM role unique ID for the ELB controller |

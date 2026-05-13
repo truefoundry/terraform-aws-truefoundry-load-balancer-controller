@@ -24,12 +24,12 @@ run "short_name_no_prefix_untrimmed" {
     elb_controller_use_name_prefix = false
   }
   assert {
-    condition     = output.elb_iam_role_computed_name == "tfy-abc-elb-controller"
-    error_message = "Got: ${output.elb_iam_role_computed_name}"
+    condition     = local.elb_controller_role_resolved_name == "tfy-abc-elb-controller"
+    error_message = "Got: ${local.elb_controller_role_resolved_name}"
   }
   assert {
-    condition     = length(output.elb_iam_role_computed_name) <= 64
-    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${output.elb_iam_role_computed_name} (len ${length(output.elb_iam_role_computed_name)})"
+    condition     = length(local.elb_controller_role_resolved_name) <= 64
+    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${local.elb_controller_role_resolved_name} (len ${length(local.elb_controller_role_resolved_name)})"
   }
 }
 
@@ -39,12 +39,12 @@ run "short_name_with_prefix_untrimmed" {
     elb_controller_use_name_prefix = true
   }
   assert {
-    condition     = output.elb_iam_role_computed_name == "tfy-abc-elb-controller"
-    error_message = "Got: ${output.elb_iam_role_computed_name}"
+    condition     = local.elb_controller_role_resolved_name == "tfy-abc-elb-controller"
+    error_message = "Got: ${local.elb_controller_role_resolved_name}"
   }
   assert {
-    condition     = length(output.elb_iam_role_computed_name) <= 64
-    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${output.elb_iam_role_computed_name} (len ${length(output.elb_iam_role_computed_name)})"
+    condition     = length(local.elb_controller_role_resolved_name) <= 64
+    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${local.elb_controller_role_resolved_name} (len ${length(local.elb_controller_role_resolved_name)})"
   }
 }
 
@@ -55,12 +55,12 @@ run "regression_40char_no_prefix_must_not_truncate" {
     elb_controller_use_name_prefix = false
   }
   assert {
-    condition     = output.elb_iam_role_computed_name == "tfy-abc-computeplane-play-elb-controller"
-    error_message = "Regression: 40-char name was truncated when use_name_prefix=false. Got: ${output.elb_iam_role_computed_name}"
+    condition     = local.elb_controller_role_resolved_name == "tfy-abc-computeplane-play-elb-controller"
+    error_message = "Regression: 40-char name was truncated when use_name_prefix=false. Got: ${local.elb_controller_role_resolved_name}"
   }
   assert {
-    condition     = length(output.elb_iam_role_computed_name) <= 64
-    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${output.elb_iam_role_computed_name} (len ${length(output.elb_iam_role_computed_name)})"
+    condition     = length(local.elb_controller_role_resolved_name) <= 64
+    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${local.elb_controller_role_resolved_name} (len ${length(local.elb_controller_role_resolved_name)})"
   }
 }
 
@@ -70,12 +70,12 @@ run "long_name_with_prefix_truncated_to_37" {
     elb_controller_use_name_prefix = true
   }
   assert {
-    condition     = output.elb_iam_role_computed_name == "tfy-abc-computeplane-play-elb-control"
-    error_message = "Got: ${output.elb_iam_role_computed_name}"
+    condition     = local.elb_controller_role_resolved_name == "tfy-abc-computeplane-play-elb-control"
+    error_message = "Got: ${local.elb_controller_role_resolved_name}"
   }
   assert {
-    condition     = length(output.elb_iam_role_computed_name) <= 64
-    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${output.elb_iam_role_computed_name} (len ${length(output.elb_iam_role_computed_name)})"
+    condition     = length(local.elb_controller_role_resolved_name) <= 64
+    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${local.elb_controller_role_resolved_name} (len ${length(local.elb_controller_role_resolved_name)})"
   }
 }
 
@@ -85,12 +85,12 @@ run "very_long_name_no_prefix_truncated_to_64" {
     elb_controller_use_name_prefix = false
   }
   assert {
-    condition     = length(output.elb_iam_role_computed_name) == 64
-    error_message = "Expected length 64, got ${length(output.elb_iam_role_computed_name)}: ${output.elb_iam_role_computed_name}"
+    condition     = length(local.elb_controller_role_resolved_name) == 64
+    error_message = "Expected length 64, got ${length(local.elb_controller_role_resolved_name)}: ${local.elb_controller_role_resolved_name}"
   }
   assert {
-    condition     = length(output.elb_iam_role_computed_name) <= 64
-    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${output.elb_iam_role_computed_name} (len ${length(output.elb_iam_role_computed_name)})"
+    condition     = length(local.elb_controller_role_resolved_name) <= 64
+    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${local.elb_controller_role_resolved_name} (len ${length(local.elb_controller_role_resolved_name)})"
   }
 }
 
@@ -102,12 +102,12 @@ run "override_takes_precedence_over_truncation" {
     elb_controller_role_override_name   = "my-custom-role-name-that-is-deliberately-long"
   }
   assert {
-    condition     = output.elb_iam_role_computed_name == "my-custom-role-name-that-is-deliberately-long"
-    error_message = "Override should be used verbatim. Got: ${output.elb_iam_role_computed_name}"
+    condition     = local.elb_controller_role_resolved_name == "my-custom-role-name-that-is-deliberately-long"
+    error_message = "Override should be used verbatim. Got: ${local.elb_controller_role_resolved_name}"
   }
   assert {
-    condition     = length(output.elb_iam_role_computed_name) <= 64
-    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${output.elb_iam_role_computed_name} (len ${length(output.elb_iam_role_computed_name)})"
+    condition     = length(local.elb_controller_role_resolved_name) <= 64
+    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${local.elb_controller_role_resolved_name} (len ${length(local.elb_controller_role_resolved_name)})"
   }
 }
 
@@ -118,16 +118,16 @@ run "boundary_37char_with_prefix_no_trim" {
     elb_controller_use_name_prefix = true
   }
   assert {
-    condition     = output.elb_iam_role_computed_name == "tfy-cluster-aaaaaaaaaa-elb-controller"
-    error_message = "Got: ${output.elb_iam_role_computed_name}"
+    condition     = local.elb_controller_role_resolved_name == "tfy-cluster-aaaaaaaaaa-elb-controller"
+    error_message = "Got: ${local.elb_controller_role_resolved_name}"
   }
   assert {
-    condition     = length(output.elb_iam_role_computed_name) == 37
-    error_message = "Expected length 37, got ${length(output.elb_iam_role_computed_name)}"
+    condition     = length(local.elb_controller_role_resolved_name) == 37
+    error_message = "Expected length 37, got ${length(local.elb_controller_role_resolved_name)}"
   }
   assert {
-    condition     = length(output.elb_iam_role_computed_name) <= 64
-    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${output.elb_iam_role_computed_name} (len ${length(output.elb_iam_role_computed_name)})"
+    condition     = length(local.elb_controller_role_resolved_name) <= 64
+    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${local.elb_controller_role_resolved_name} (len ${length(local.elb_controller_role_resolved_name)})"
   }
 }
 
@@ -138,16 +138,16 @@ run "boundary_38char_with_prefix_trimmed_to_37" {
     elb_controller_use_name_prefix = true
   }
   assert {
-    condition     = output.elb_iam_role_computed_name == "tfy-cluster-aaaaaaaaaaa-elb-controlle"
-    error_message = "Got: ${output.elb_iam_role_computed_name}"
+    condition     = local.elb_controller_role_resolved_name == "tfy-cluster-aaaaaaaaaaa-elb-controlle"
+    error_message = "Got: ${local.elb_controller_role_resolved_name}"
   }
   assert {
-    condition     = length(output.elb_iam_role_computed_name) == 37
-    error_message = "Expected length 37, got ${length(output.elb_iam_role_computed_name)}"
+    condition     = length(local.elb_controller_role_resolved_name) == 37
+    error_message = "Expected length 37, got ${length(local.elb_controller_role_resolved_name)}"
   }
   assert {
-    condition     = length(output.elb_iam_role_computed_name) <= 64
-    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${output.elb_iam_role_computed_name} (len ${length(output.elb_iam_role_computed_name)})"
+    condition     = length(local.elb_controller_role_resolved_name) <= 64
+    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${local.elb_controller_role_resolved_name} (len ${length(local.elb_controller_role_resolved_name)})"
   }
 }
 
@@ -158,16 +158,16 @@ run "boundary_64char_no_prefix_no_trim" {
     elb_controller_use_name_prefix = false
   }
   assert {
-    condition     = output.elb_iam_role_computed_name == "tfy-cluster-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-elb-controller"
-    error_message = "Got: ${output.elb_iam_role_computed_name}"
+    condition     = local.elb_controller_role_resolved_name == "tfy-cluster-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-elb-controller"
+    error_message = "Got: ${local.elb_controller_role_resolved_name}"
   }
   assert {
-    condition     = length(output.elb_iam_role_computed_name) == 64
-    error_message = "Expected length 64, got ${length(output.elb_iam_role_computed_name)}"
+    condition     = length(local.elb_controller_role_resolved_name) == 64
+    error_message = "Expected length 64, got ${length(local.elb_controller_role_resolved_name)}"
   }
   assert {
-    condition     = length(output.elb_iam_role_computed_name) <= 64
-    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${output.elb_iam_role_computed_name} (len ${length(output.elb_iam_role_computed_name)})"
+    condition     = length(local.elb_controller_role_resolved_name) <= 64
+    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${local.elb_controller_role_resolved_name} (len ${length(local.elb_controller_role_resolved_name)})"
   }
 }
 
@@ -178,16 +178,16 @@ run "boundary_65char_no_prefix_trimmed_to_64" {
     elb_controller_use_name_prefix = false
   }
   assert {
-    condition     = output.elb_iam_role_computed_name == "tfy-cluster-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-elb-controlle"
-    error_message = "Got: ${output.elb_iam_role_computed_name}"
+    condition     = local.elb_controller_role_resolved_name == "tfy-cluster-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-elb-controlle"
+    error_message = "Got: ${local.elb_controller_role_resolved_name}"
   }
   assert {
-    condition     = length(output.elb_iam_role_computed_name) == 64
-    error_message = "Expected length 64, got ${length(output.elb_iam_role_computed_name)}"
+    condition     = length(local.elb_controller_role_resolved_name) == 64
+    error_message = "Expected length 64, got ${length(local.elb_controller_role_resolved_name)}"
   }
   assert {
-    condition     = length(output.elb_iam_role_computed_name) <= 64
-    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${output.elb_iam_role_computed_name} (len ${length(output.elb_iam_role_computed_name)})"
+    condition     = length(local.elb_controller_role_resolved_name) <= 64
+    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${local.elb_controller_role_resolved_name} (len ${length(local.elb_controller_role_resolved_name)})"
   }
 }
 
@@ -200,12 +200,12 @@ run "override_with_prefix_takes_precedence" {
     elb_controller_role_override_name   = "short-override-name"
   }
   assert {
-    condition     = output.elb_iam_role_computed_name == "short-override-name"
-    error_message = "Override should be used verbatim even when use_name_prefix=true. Got: ${output.elb_iam_role_computed_name}"
+    condition     = local.elb_controller_role_resolved_name == "short-override-name"
+    error_message = "Override should be used verbatim even when use_name_prefix=true. Got: ${local.elb_controller_role_resolved_name}"
   }
   assert {
-    condition     = length(output.elb_iam_role_computed_name) <= 64
-    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${output.elb_iam_role_computed_name} (len ${length(output.elb_iam_role_computed_name)})"
+    condition     = length(local.elb_controller_role_resolved_name) <= 64
+    error_message = "Computed name exceeds AWS IAM role name hard limit of 64 chars: ${local.elb_controller_role_resolved_name} (len ${length(local.elb_controller_role_resolved_name)})"
   }
 }
 

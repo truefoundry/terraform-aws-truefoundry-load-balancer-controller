@@ -1,6 +1,45 @@
 # terraform-aws-truefoundry-load-balancer-controller
 Terraform module to spin up AWS IAM load balancer controller
 
+## Upgrade Notes
+
+### v0.2.1 — IAM role name truncation fix
+
+Versions `v0.2.0` of this module unconditionally truncated the computed IAM role
+name to 37 characters via `substr("${var.cluster_name}-elb-controller", 0, 37)`,
+even when `elb_controller_use_name_prefix = false`. This caused role names in the
+38-64 character range to be destroyed and recreated under a shorter name during
+the `v0.1.x` → `v0.2.0` upgrade, breaking IRSA wiring downstream.
+
+`v0.2.1` makes the truncation conditional on `elb_controller_use_name_prefix`:
+
+- `use_name_prefix = true` (default): name is still capped at 37 chars to leave
+  room for the 26-char random suffix appended by the AWS provider (AWS IAM role
+  name hard limit is 64 chars).
+- `use_name_prefix = false`: name is capped at the AWS hard limit of 64 chars.
+  For all realistic cluster names this is a no-op, restoring `v0.1.x` behavior.
+
+#### Upgrading from v0.1.x → v0.2.1+
+
+No role recreation. The fix restores the un-truncated name behavior of `v0.1.x`.
+
+#### Upgrading from v0.2.0 → v0.2.1+
+
+If your cluster name produced a 38-64 char default role name on `v0.2.0`, your
+IAM role currently exists under a truncated name (e.g.
+`tfy-abc-computeplane-play-elb-control` instead of
+`tfy-abc-computeplane-play-elb-controller`). Upgrading to `v0.2.1` will restore
+the full un-truncated name, causing a **one-time destroy/recreate** of the IAM
+role.
+
+To keep the current trimmed name and avoid the recreate, set the existing
+override variables before upgrading:
+
+```hcl
+elb_controller_role_enable_override = true
+elb_controller_role_override_name   = "<current-trimmed-name>" # e.g. "tfy-abc-computeplane-play-elb-control"
+```
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 

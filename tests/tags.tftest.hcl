@@ -38,7 +38,35 @@ run "tags_applied" {
 
   # Module default tag is present in local.tags
   assert {
-    condition     = local.tags["terraform-module"] == "load-balancer-controller"
-    error_message = "Expected terraform-module=load-balancer-controller in local.tags, got: ${local.tags["terraform-module"]}"
+    condition     = local.tags["truefoundry-terraform-module"] == "load-balancer-controller"
+    error_message = "Expected truefoundry-terraform-module=load-balancer-controller in local.tags, got: ${local.tags["truefoundry-terraform-module"]}"
+  }
+
+  # Module managed tag is present in local.tags
+  assert {
+    condition     = local.tags["truefoundry-managed"] == "true"
+    error_message = "Expected truefoundry-managed=true in local.tags, got: ${local.tags["truefoundry-managed"]}"
+  }
+}
+
+run "disable_default_tags" {
+  command = plan
+
+  variables {
+    cluster_name         = "test"
+    tags                 = { "cost-center" = "test-123" }
+    disable_default_tags = true
+  }
+
+  # Caller tag is still present when default tags are disabled
+  assert {
+    condition     = local.tags["cost-center"] == "test-123"
+    error_message = "Expected cost-center=test-123 in local.tags, got: ${local.tags["cost-center"]}"
+  }
+
+  # truefoundry-terraform-module must be absent when disable_default_tags=true
+  assert {
+    condition     = !contains(keys(local.tags), "truefoundry-terraform-module")
+    error_message = "Expected truefoundry-terraform-module to be absent when disable_default_tags=true"
   }
 }

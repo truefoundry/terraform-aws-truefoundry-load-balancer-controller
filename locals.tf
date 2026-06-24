@@ -4,6 +4,7 @@ locals {
       "truefoundry-terraform-module" = "load-balancer-controller"
       "truefoundry-managed"          = "true"
       "truefoundry-cluster-name"     = var.cluster_name
+      "cluster-name"                 = var.cluster_name
     },
     var.tags
   )
